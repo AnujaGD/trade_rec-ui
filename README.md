@@ -1,1 +1,1 @@
-# trade_rec-ui
+# trade recommendation ui
