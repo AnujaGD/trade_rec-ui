@@ -1,0 +1,145 @@
+<div class="container-fluid">
+    <!-- <h3 class="text-dark mb-4">Team</h3> -->
+    <div class="row">
+        <div class="col-md-6 col-xl-3 mb-4" (click)="callFun('Large Cap')" id="capHead"  > 
+            <div class="card shadow border-left-primary py-2" [ngStyle]="{'background-color': marketCap=='Large Cap' ? 'lavender' : null}"  style="cursor:pointer;" >
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-primary font-weight-bold text-s mb-1"><span >Large Cap</span></div>
+                            <!-- <div class="text-dark font-weight-bold h5 mb-0"><span>$40,000</span></div> -->
+                        </div>
+                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4" (click)="callFun('Mid Cap')" id="capHead">
+            <div class="card shadow border-left-success py-2" style="cursor:pointer;" [ngStyle]="{'background-color': marketCap=='Mid Cap' ? 'lavender' : null}" >
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-success font-weight-bold text-s mb-1"><span>Mid Cap</span></div>
+                            <!-- <div class="text-dark font-weight-bold h5 mb-0"><span>$215,000</span></div> -->
+                        </div>
+                        <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4" (click)="callFun('Small Cap')" id="capHead">
+            <div class="card shadow border-left-info py-2" style="cursor:pointer;" [ngStyle]="{'background-color': marketCap=='Small Cap' ? 'lavender' : null}">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-info font-weight-bold text-s mb-1"><span>Small Cap</span></div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <!-- <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div> -->
+                                </div>
+                                <!-- <div class="col">
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4" (click)="getRecommendations(stocks[0].marketCap)" id="capHead"  *ngIf="stocks!=null">
+            <div class="card shadow border-left-success py-2" style="cursor:pointer;">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-success font-weight-bold text-s mb-1"><span>Top 5 <span>{{stocks[0].marketCap}}</span></span></div>
+                            <!-- <div class="text-dark font-weight-bold h5 mb-0"><span>$215,000</span></div> -->
+                        </div>
+                        <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div  *ngIf="stocks==null && !loading"> Click one of the above </div>
+    <div *ngIf="loading">Loading Data</div>
+    <div class="card shadow" *ngIf="stocks!=null"> 
+        <div class="card-header py-3">
+            <p  *ngIf="stocks!=null"  class="text-primary m-0 font-weight-bold">{{stocks[0].marketCap}}</p>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                
+                <div class="col-md-6 text-nowrap">
+                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label>Show&nbsp;<select class="form-control form-control-sm custom-select custom-select-sm">
+                                <option value="10" selected="">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            <option value="100">100</option> 
+                            </select>&nbsp;</label></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                        <label>
+                        <input type="search"  (input)="searchFilter($event)"  class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
+                    </label></div>
+                </div>
+            </div>
+            
+            <div *ngIf="stocks!=null"  class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table my-0" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Name</th>`
+                            <th>Market Open Price</th>
+                            <th>Current Price</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="stocks!=null">
+                        <tr *ngFor="let stock of stocks"  >
+                            <!-- <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td> -->
+                            <td>{{stock.stockSymbol}}</td>
+                            <td>{{stock.stockName}}</td>
+                            <td>{{stock.marketOpenPrice}}</td>
+                            <td>{{stock.currentPrice}}</td>
+                            <!-- <td>$162,700</td> -->
+                            <td *ngIf="!saved"> <button class=" btn btn-primary" (click)="saveStock(stock)">Save</button></td>
+                            <td *ngIf="saved">Saved</td>
+                        </tr>
+                        
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Symbol</strong></td>
+                            <td><strong>Name</strong></td>
+                            <td><strong>Market Open Price</strong></td>
+                            <td><strong>Current Price</strong></td>
+                           
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- <div class="row">
+                <div class="col-md-6 align-self-center">
+                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
+                </div>
+                <div class="col-md-6">
+                    <nav class="d-lg-flex justify-cngontent-lg-end dataTables_paginate paging_simple_numbers">
+                        <ul class="pagination">
+                            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
